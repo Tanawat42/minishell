@@ -1,0 +1,25 @@
+// Lexical analizer for minishell's BASH
+
+0) Check if qoute pairs are not missing. If so, start a heredoc prompt
+to let the user input the arguments, then joins then concatenates it.
+
+e"cho" cat|cat|cat
+
+1) split space (if not in qoute pair) [DONE]
+
+	[e"cho"] [cat|cat|cat]
+
+2) split meta char (ex: pipe symbol, +, &&) if not in qoute pair. Also asign type.
+
+	[e"cho":CMD] [cat:ARG] [|:PIPE] [cat:CMD] [|:PIPE] [cat:CMD]
+
+3) remove qoute pair
+	[echo:CMD] [cat:ARG] [|:PIPE] [cat:CMD] [|:PIPE] [cat:CMD]
+
+4) expand (eg $PATH, $?)
+
+// Parser
+
+1) create command table for each meta chars based on the token stream.
+
+2) check for syntatic errors
