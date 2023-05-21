@@ -6,19 +6,16 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:03:38 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/17 15:41:03 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:59:49 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	repl_shell(t_global *g,
-	void (*parser)(char *ln), void (*sighandel)(int id))
+void	repl_shell(t_global *g, void (*fn)(t_global *, char *))
 {
 	char	*line;
 
-	(void)(g);
-	signal(SIGINT, sighandel);
 	while (1)
 	{
 		line = READLN;
@@ -29,7 +26,7 @@ void	repl_shell(t_global *g,
 		}
 		else
 			REPL_HIST(line);
-		parser(line);
+		fn(g, line);
 		free(line);
 	}
 	FT_GNL_FREE(0);

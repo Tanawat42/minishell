@@ -6,12 +6,12 @@
 #    By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/19 06:32:57 by tjukmong          #+#    #+#              #
-#    Updated: 2023/05/17 15:10:04 by tjukmong         ###   ########.fr        #
+#    Updated: 2023/05/20 19:00:30 by tjukmong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
-SRCS		= minishell.c repl.c
+SRCS		= minishell.c repl.c lexer.c
 # SRCS_BONUS	= 
 
 SRC_DIR		= ./src/

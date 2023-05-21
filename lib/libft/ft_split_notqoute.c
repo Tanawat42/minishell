@@ -6,109 +6,100 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 02:35:08 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/04/22 02:43:09 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/21 14:25:28 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-static size_t	ft_splitlen_notqoute(char const *s, char c)
+static size_t	word_count(char const *s, char *c)
 {
-	char	*str;
-	int		flag;
-	int		qoute;
-	int		dbqoute;
+	size_t	slen;
+	size_t	clen;
 	size_t	len;
+	char	*str;
+	char	*needle;
 
 	str = (char *)s;
-	len = 0;
-	flag = 0;
-	qoute = 0;
-	dbqoute = 0;
-	while (*str)
+	slen = ft_strlen(s);
+	clen = ft_strlen(c);
+	len = 1;
+	while (1)
 	{
-		if (*str == '\"' && !qoute)
-			dbqoute = !dbqoute;
-		else if (*str == '\'' && !dbqoute)
-			qoute = !qoute;
-		if (!(qoute || dbqoute) && *str != c && !flag && ++len)
-			flag = 1;
-		else if (!(qoute || dbqoute) && *str == c && flag)
-			flag = 0;
-		str++;
+		needle = strnstr_notqoute(str, c, slen);
+		if (needle == NULL)
+			break ;
+		if (str != needle && needle + clen != s + slen)
+			len++;
+		str = needle + clen;
 	}
 	return (len);
 }
 
-static char	**ft_free_arr(char **s)
+static void	word_cpy(char const *s, char *c, char **w)
 {
-	int	i;
+	size_t	slen;
+	size_t	clen;
+	char	*str;
+	char	*needle;
+	char	*word;
 
-	i = 0;
-	while (s[i])
+	str = (char *)s;
+	slen = ft_strlen(s);
+	clen = ft_strlen(c);
+	while (str < s + slen)
 	{
-		free(s[i]);
-		i++;
+		needle = strnstr_notqoute(str, c, slen);
+		if (needle == NULL)
+			needle = (char *)s + slen;
+		if (str != needle)
+		{
+			word = malloc((needle - str) + 1);
+			if (word == NULL)
+				break ;
+			ft_strlcpy(word, str, (needle - str) + 1);
+			*w = word;
+			w++;
+		}
+		str = needle + clen;
 	}
-	free(s);
-	return (NULL);
 }
 
-static int	ft_put_table_array(char **res, char *str, size_t *a, size_t *b)
+static int	free_if_null(char **s, size_t words)
 {
-	res[*a] = malloc((*b + 1) * sizeof(char));
-	if (!res[*a])
+	char	**sp;
+
+	sp = s;
+	while (words--)
 	{
-		ft_free_arr(res);
-		return (1);
+		if (*sp == NULL)
+		{
+			sp = s;
+			while (*sp)
+				free(*sp++);
+			free(s);
+			return (1);
+		}
+		sp++;
 	}
-	ft_memcpy(res[*a], str - *b, *b);
-	res[*a][*b] = '\0';
-	(*a)++;
-	*b = 0;
 	return (0);
 }
 
-static char	**ft_put_table(char **res, char *str, char c, size_t len)
+char	**ft_split_notqoute(char const *s, char *c)
 {
-	size_t	a;
-	size_t	b;
-	int		qoute;
-	int		dbqoute;
+	size_t	words;
+	char	**split;
 
-	a = 0;
-	b = 0;
-	qoute = 0;
-	dbqoute = 0;
-	while (a < len)
-	{
-		if (*str == '\"' && !qoute)
-			dbqoute = !dbqoute;
-		else if (*str == '\'' && !dbqoute)
-			qoute = !qoute;
-		if ((*str && *str != c) || qoute || dbqoute)
-			b++;
-		else if (b != 0)
-			if (ft_put_table_array(res, str, &a, &b))
-				return (NULL);
-		str++;
-	}
-	return (res);
-}
-
-char	**ft_split_notqoute(char const *s, char c)
-{
-	char	**res;
-	char	*str;
-	size_t	len;
-
-	if (!s)
+	if (s == NULL || c == NULL)
 		return (NULL);
-	str = (char *)s;
-	len = ft_splitlen_notqoute(s, c);
-	res = malloc((len + 1) * sizeof(char *));
-	if (!res)
+	words = word_count(s, c);
+	split = malloc((words + 1) * sizeof(char *));
+	if (!split)
 		return (NULL);
-	res[len] = NULL;
-	return (ft_put_table(res, str, c, len));
+	split[words] = NULL;
+	word_cpy(s, c, split);
+	if (free_if_null(split, words))
+		return (NULL);
+	return (split);
 }

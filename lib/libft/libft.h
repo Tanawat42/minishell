@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 01:31:44 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/04/22 02:37:54 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/21 12:23:00 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 // Custom (minilibx)
-char	**ft_split_notqoute(char const *s, char c);
+char	*strnstr_notqoute(const char *big, const char *little, size_t len);
+char	**ft_split_notqoute(char const *s, char *c);
 
 #endif

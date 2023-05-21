@@ -6,14 +6,14 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 21:27:35 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/17 15:42:10 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/21 03:16:42 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define DEBUG_MODE 0
+# define DEBUG_MODE 1
 
 # include <stdio.h>
 # include <readline/readline.h>
@@ -34,12 +34,30 @@
 #  define FT_GNL_FREE(fd)
 # endif
 
-typedef struct s_global 
+enum e_token_type
 {
-	
-}	t_global;
+	IDEN,
+	PIPE
+};
 
-void	repl_shell(t_global *g,
-	void (*parser)(char *ln), void (*sighandel)(int id));
+typedef struct s_token
+{
+	char				*tok;
+	enum e_token_type	type;
+	struct s_token		*next;
+}				t_token;
+
+typedef struct s_global
+{
+	t_token	*token;
+	t_token	*token_last;
+}				t_global;
+
+// TUI
+void	repl_shell(t_global *g, void (*fn)(t_global *, char *));
+
+// Lexer
+void	lexer(t_global *g, char *ln);
+void	token_push(t_global *g, enum e_token_type type, char *tok);
 
 #endif

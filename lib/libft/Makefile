@@ -6,7 +6,7 @@
 #    By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 21:14:32 by tjukmong          #+#    #+#              #
-#    Updated: 2023/04/22 02:36:09 by tjukmong         ###   ########.fr        #
+#    Updated: 2023/05/21 12:30:57 by tjukmong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRC			= ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c\
 			ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c\
 			ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c\
 			ft_putendl_fd.c ft_putnbr_fd.c ft_striteri.c\
-			ft_split_notqoute.c
+			ft_strnstr_notqoute.c ft_split_notqoute.c
 
 BONUS	= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c\
 			ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c\
@@ -72,13 +72,13 @@ ${NAME}:		$(SRCOBJ)
 # Tester file
 test:			all
 	${CC} ${CFLAGS} ${TESTFILE} ${NAME} -o ${TESTFILE:.c=.out}
-	@ echo "\033[1;36m========-[ Execution output ]-========\033[0;37m"	   > ${LOGFILE}
-	@ exec ${DIRSRC}${TESTFILE:.c=.out} | cat -e						  >> ${LOGFILE}
-	@ echo "\n\033[1;35m============-[ Valgrind ]-============\033[0;37m" >> ${LOGFILE}
-	@ valgrind ${DIRSRC}${TESTFILE:.c=.out} -qs --leak-check=full		  >> ${LOGFILE} 2>&1
-	@ echo "\033[1;32m===========-[ Norm errors ]-==========\033[0;37m"	  >> ${LOGFILE}
-	@ norminette ${DIRSRC} | grep "Error" | cat							  >> ${LOGFILE}
-	@ echo "\033[1;32m======================================\033[0;37m"	  >> ${LOGFILE}
+	@ echo -e "\033[1;36m========-[ Execution output ]-========\033[0;37m"	  > ${LOGFILE}
+	@ exec ${DIRSRC}${TESTFILE:.c=.out} | cat -e							 >> ${LOGFILE}
+	@ echo -e "\n\033[1;35m============-[ Valgrind ]-============\033[0;37m" >> ${LOGFILE}
+	@ valgrind ${DIRSRC}${TESTFILE:.c=.out} -qs --leak-check=full			 >> ${LOGFILE} 2>&1
+	@ echo -e "\033[1;32m===========-[ Norm errors ]-==========\033[0;37m"	 >> ${LOGFILE}
+	@ norminette ${DIRSRC} | grep "Error" | cat								 >> ${LOGFILE}
+	@ echo -e "\033[1;32m======================================\033[0;37m"	 >> ${LOGFILE}
 	@ less -R ${LOGFILE}
 
 readlog:
