@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 21:27:35 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/21 03:16:42 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/22 13:25:08 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,34 @@ enum e_token_type
 	PIPE
 };
 
-typedef struct s_token
+typedef struct s_toklist
 {
 	char				*tok;
 	enum e_token_type	type;
-	struct s_token		*next;
+	struct s_toklist	*next;
+}				t_toklist;
+
+typedef struct s_token
+{
+	t_toklist	*token;
+	t_toklist	*token_last;
 }				t_token;
 
 typedef struct s_global
 {
-	t_token	*token;
-	t_token	*token_last;
+	t_token	token;
 }				t_global;
 
 // TUI
 void	repl_shell(t_global *g, void (*fn)(t_global *, char *));
 
-// Lexer
+// Token
+void	token_push(t_token *t, enum e_token_type type, char *tok);
+void	token_insrt(t_toklist **tok, t_toklist **newtok);
+void	token_ittr(t_token *t, void (*fn)(t_toklist *));
+void	token_map(t_token *t, t_toklist *(*fn)(t_toklist *));
+
+// Lexer (a.k.a Tokenizer)
 void	lexer(t_global *g, char *ln);
-void	token_push(t_global *g, enum e_token_type type, char *tok);
 
 #endif

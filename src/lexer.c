@@ -6,32 +6,61 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:47:56 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/21 03:40:25 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/22 13:29:27 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	token_push(t_global *g, enum e_token_type type, char *tok)
+void	token_split_delim(t_token *t, char *ln)
 {
-	if (!g->token)
+	char	**split;
+	size_t	indx;
+
+	indx = 0;
+	split = ft_split_notqoute(ln, "||");
+	if (!split)
+		return ;
+	while (split[indx])
 	{
-		g->token = malloc(sizeof(t_token));
-		g->token_last = g->token;
+		if (indx)
+			token_push(t, PIPE, ft_strdup("||"));
+		if (split[indx][0] != '\0')
+			token_push(t, IDEN, split[indx]);
+		indx++;
 	}
-	else
-	{
-		g->token_last->next = malloc(sizeof(t_token));
-		g->token_last = g->token_last->next;
-	}
-	g->token_last->next = NULL;
-	g->token_last->tok = tok;
-	g->token_last->type = type;
+	free(split);
+}
+
+t_toklist	*token_split_replace(t_toklist *t)
+{
+	t_token	new;
+
+	if (t == NULL)
+		return (NULL);
+	new.token = NULL;
+	token_split_delim(&new, t->tok);
+	token_insrt(&t, &new.token);
+	return (new.token_last);
 }
 
 void	lexer(t_global *g, char *ln)
 {
+	t_token		tok;
+	t_toklist	*t;
+
 	(void)(g);
-	token_push(g, IDEN, ln);
-	DEBUG(g->token_last->tok);
+	tok.token = NULL;
+	token_push(&tok, IDEN, ln);
+	token_map(&tok, token_split_replace);
+
+	t = tok.token;
+	while (tok.token)
+	{
+		printf("%d: %s\n", t->type, t->tok);
+		free(tok.token->tok);
+		t = t->next;
+		free(tok.token);
+		tok.token = t;
+	}
 }

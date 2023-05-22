@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 02:35:08 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/21 14:25:28 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/22 04:44:48 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ static size_t	word_count(char const *s, char *c)
 		needle = strnstr_notqoute(str, c, slen);
 		if (needle == NULL)
 			break ;
-		if (str != needle && needle + clen != s + slen)
+		if (needle + clen != s + slen)
 			len++;
 		str = needle + clen;
 	}
 	return (len);
 }
 
-static void	word_cpy(char const *s, char *c, char **w)
+static void	word_cpy(char const *s, char *c, char **w, size_t words)
 {
 	size_t	slen;
 	size_t	clen;
@@ -48,21 +48,18 @@ static void	word_cpy(char const *s, char *c, char **w)
 	str = (char *)s;
 	slen = ft_strlen(s);
 	clen = ft_strlen(c);
-	while (str < s + slen)
+	while (words--)
 	{
 		needle = strnstr_notqoute(str, c, slen);
 		if (needle == NULL)
 			needle = (char *)s + slen;
-		if (str != needle)
-		{
-			word = malloc((needle - str) + 1);
-			if (word == NULL)
-				break ;
-			ft_strlcpy(word, str, (needle - str) + 1);
-			*w = word;
-			w++;
-		}
+		word = malloc((needle - str) + 1);
+		if (!word)
+			break ;
+		ft_strlcpy(word, str, (needle - str) + 1);
 		str = needle + clen;
+		*w = word;
+		w++;
 	}
 }
 
@@ -98,7 +95,7 @@ char	**ft_split_notqoute(char const *s, char *c)
 	if (!split)
 		return (NULL);
 	split[words] = NULL;
-	word_cpy(s, c, split);
+	word_cpy(s, c, split, words);
 	if (free_if_null(split, words))
 		return (NULL);
 	return (split);
