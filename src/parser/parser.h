@@ -6,7 +6,7 @@
 /*   By: kkaiyawo <kkaiyawo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 10:57:29 by kkaiyawo          #+#    #+#             */
-/*   Updated: 2023/05/21 20:15:28 by kkaiyawo         ###   ########.fr       */
+/*   Updated: 2023/05/22 09:56:27 by kkaiyawo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ parses toklist in a t_parser struct, splitting each token into related
 structures
 ************************************************************************** */
 t_parser	*parser(char **toklist, char **envp,
-	void (*error)(t_parser *parser);
+	void (*error)(t_parser *parser));
 
 // parser_init.c
 /* **************************************************************************
@@ -67,15 +67,15 @@ t_parser	*parser_init(char **envp, void (*error)(t_parser *parser));
 /* **************************************************************************
 from envp, extract the PATH variable and split it into an array of path
 ************************************************************************** */
-char		**envp_to_path(char **envp, void (*error)(t_parser *parser);
+char		**envp_to_path(char **envp, void (*error)(t_parser *parser));
 /* **************************************************************************
 initialize a t_cmd struct
 ************************************************************************** */
-t_cmd		*cmd_init(void (*error)(t_parser *parser);
+t_cmd		*cmd_init(void (*error)(t_parser *parser));
 /* **************************************************************************
 initialize a t_fileset struct
 ************************************************************************** */
-t_fileset	*fileset_init(enum e_filetype ft, void (*error)(t_parser *parser);
+t_fileset	*fileset_init(enum e_filetype ft, void (*error)(t_parser *parser));
 
 // parser_token.c
 /* **************************************************************************
@@ -89,7 +89,7 @@ int			token_convert(char *token, t_parser *parser, void (*error)(t_parser
 /* **************************************************************************
 converts a token into a t_cmd node
 ************************************************************************** */
-void		token_to_pipe(t_parser *parser, void (*error)(t_parser *parser));)
+void		token_to_pipe(t_parser *parser, void (*error)(t_parser *parser));
 /* **************************************************************************
 converts a t_list node into a char ** array
 ************************************************************************** */
@@ -101,7 +101,7 @@ char		**token_to_arg(t_list *token, t_parser *parser);
 converts a INFILE token into a t_fileset node
 ************************************************************************** */
 void		infile_to_fileset(char *file, t_cmd *cmd, t_parser *parser, void
-	(*error)(t_parser);
+	(*error)(t_parser));
 /* **************************************************************************
 converts a HEREDOC token into a t_fileset node
 ************************************************************************** */
@@ -111,7 +111,7 @@ void		heredoc_to_fileset(char *file, t_cmd *cmd, t_parser *parser, void
 converts a OUTFILE token into a t_fileset node
 ************************************************************************** */
 void		outfile_to_fileset(char *file, t_cmd *cmd, t_parser *parser, void
-	(*error)(t_parser)));
+	(*error)(t_parser));
 /* **************************************************************************
 converts a APPEND token into a t_fileset node
 ************************************************************************** */
@@ -121,7 +121,7 @@ void		append_to_fileset(char *file, t_cmd *cmd, t_parser *parser, void
 converts a PIPE token into a t_fileset node if there is no other fileset
 except STDOUT or STDIN
 ************************************************************************** */
-void		pipe_to_fileset(int fd, t_cmd *cmd, t_parser *parser
+void		pipe_to_fileset(int fd, t_cmd *cmd, t_parser *parser,
 	void (*error)(t_parser));
 
 #endif
