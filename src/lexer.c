@@ -6,25 +6,25 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:47:56 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/22 13:29:27 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:55:47 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	token_split_delim(t_token *t, char *ln)
+void	token_split_delim(t_token *t, char *ln, char *delim)
 {
 	char	**split;
 	size_t	indx;
 
 	indx = 0;
-	split = ft_split_notqoute(ln, "||");
+	split = ft_split_notqoute(ln, delim);
 	if (!split)
 		return ;
 	while (split[indx])
 	{
 		if (indx)
-			token_push(t, PIPE, ft_strdup("||"));
+			token_push(t, PIPE, ft_strdup(delim));
 		if (split[indx][0] != '\0')
 			token_push(t, IDEN, split[indx]);
 		indx++;
@@ -39,7 +39,7 @@ t_toklist	*token_split_replace(t_toklist *t)
 	if (t == NULL)
 		return (NULL);
 	new.token = NULL;
-	token_split_delim(&new, t->tok);
+	token_split_delim(&new, t->tok, "||");
 	token_insrt(&t, &new.token);
 	return (new.token_last);
 }
