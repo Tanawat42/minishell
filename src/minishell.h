@@ -6,16 +6,17 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 21:27:35 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/22 13:25:08 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:04:54 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define DEBUG_MODE 1
+# define DEBUG_MODE 0
 
 # include <stdio.h>
+# include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/signal.h>
