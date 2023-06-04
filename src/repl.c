@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 15:03:38 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/20 18:59:49 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/06/04 17:35:44 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	repl_shell(t_global *g, void (*fn)(t_global *, char *))
 		else
 			REPL_HIST(line);
 		fn(g, line);
-		free(line);
 	}
 	FT_GNL_FREE(0);
 }

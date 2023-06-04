@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 21:27:35 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/06/04 16:48:48 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/06/04 17:32:53 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 enum e_token_type
 {
 	IDEN,
+	HEREDOC,
+	REDIRR_IN,
 	PIPE
 };
 
@@ -59,15 +61,19 @@ typedef struct s_global
 }				t_global;
 
 // TUI
-void	repl_shell(t_global *g, void (*fn)(t_global *, char *));
+void		repl_shell(t_global *g, void (*fn)(t_global *, char *));
 
 // Token
-void	token_push(t_token *t, enum e_token_type type, char *tok);
-void	token_insrt(t_toklist *dst, t_token *src);
-void	token_ittr(t_token *t, void (*fn)(t_toklist *));
-void	token_map(t_token *t, t_toklist *(*fn)(t_toklist *));
+void		token_push(t_token *t, enum e_token_type type, char *tok);
+void		token_insrt(t_toklist *dst, t_token *src);
+void		token_ittr(t_token *t, void (*fn)(t_toklist *));
+void		token_map(t_token *t, t_toklist *(*fn)(t_toklist *));
 
 // Lexer (a.k.a Tokenizer)
-void	lexer(t_global *g, char *ln);
+void		lexer(t_global *g, char *ln);
+t_toklist	*lexer_split_heredoc(t_toklist *tok);
+t_toklist	*lexer_split_pipe(t_toklist *tok);
+t_toklist	*lexer_split_space(t_toklist *tok);
+t_toklist	*lexer_trimstr(t_toklist *tok);
 
 #endif

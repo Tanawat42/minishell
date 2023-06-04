@@ -6,86 +6,15 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 18:47:56 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/06/04 17:01:36 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/06/04 17:36:59 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_toklist	*lexer_split_heredoc(t_toklist *tok)
-{
-	t_token		tok_new;
-	int			indx;
-	char		**split;
-
-	tok_new.token = NULL;
-	indx = 0;
-	split = ft_split_notqoute(tok->tok, "<<");
-	while (split[indx])
-	{
-		if (indx)
-			token_push(&tok_new, PIPE, ft_strdup("<<"));
-		token_push(&tok_new, IDEN, split[indx]);
-		indx++;
-	}
-	free(split);
-	token_insrt(tok, &tok_new);
-	return (tok_new.token_last);
-}
-
-t_toklist	*lexer_split_pipe(t_toklist *tok)
-{
-	t_token		tok_new;
-	int			indx;
-	char		**split;
-
-	tok_new.token = NULL;
-	indx = 0;
-	split = ft_split_notqoute(tok->tok, "|");
-	while (split[indx])
-	{
-		if (indx)
-			token_push(&tok_new, PIPE, ft_strdup("|"));
-		token_push(&tok_new, IDEN, split[indx]);
-		indx++;
-	}
-	free(split);
-	token_insrt(tok, &tok_new);
-	return (tok_new.token_last);
-}
-
-t_toklist	*lexer_split_space(t_toklist *tok)
-{
-	t_token		tok_new;
-	int			indx;
-	char		**split;
-
-	tok_new.token = NULL;
-	indx = 0;
-	split = ft_split_notqoute(tok->tok, " ");
-	while (split[indx])
-	{
-		token_push(&tok_new, IDEN, split[indx]);
-		indx++;
-	}
-	free(split);
-	token_insrt(tok, &tok_new);
-	return (tok_new.token_last);
-}
-
-t_toklist	*lexer_trimstr(t_toklist *tok)
-{
-	char	*tmp;
-
-	tmp = ft_strtrim(tok->tok, "\"\'");
-	free(tok->tok);
-	tok->tok = tmp;
-	return (tok);
-}
-
 void	print_token(t_toklist *t)
 {
-	printf("%s\n", t->tok);
+	printf("[%d] %s\n", t->type, t->tok);
 	free(t->tok);
 }
 
