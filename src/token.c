@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 01:09:28 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/22 13:27:50 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/06/04 16:48:36 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,15 @@ void	token_push(t_token *t, enum e_token_type type, char *tok)
 	t->token_last->type = type;
 }
 
-void	token_insrt(t_toklist **tok, t_toklist **newtok)
+void	token_insrt(t_toklist *dst, t_token *src)
 {
-	t_toklist	*first;
-	t_toklist	*last;
-	t_toklist	*next;
-
-	if (!tok || !*tok || !newtok || !*newtok)
-		return ;
-	first = *tok;
-	last = (*tok)->next;
-	next = (*newtok)->next;
-	// free(first->tok);
-	first->tok = (*newtok)->tok;
-	first->type = (*newtok)->type;
-	while (next != NULL)
-		next = next->next;
-	next = last;
-	first->next = (*newtok)->next;
-	free(*newtok);
+	free(dst->tok);
+	src->token_last->next = dst->next;
+	dst->tok = src->token->tok;
+	dst->type = src->token->type;
+	dst->next = src->token->next;
+	free(src->token);
+	src->token = NULL;
 }
 
 void	token_ittr(t_token *t, void (*fn)(t_toklist *))
@@ -76,7 +66,7 @@ void	token_map(t_token *t, t_toklist *(*fn)(t_toklist *))
 	{
 		tmp = fn(node);
 		if (!tmp)
-			break ;
+			tmp = node;
 		node = tmp->next;
 	}
 }

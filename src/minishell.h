@@ -6,7 +6,7 @@
 /*   By: tjukmong <tjukmong@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 21:27:35 by tjukmong          #+#    #+#             */
-/*   Updated: 2023/05/22 13:25:08 by tjukmong         ###   ########.fr       */
+/*   Updated: 2023/06/04 16:48:48 by tjukmong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	repl_shell(t_global *g, void (*fn)(t_global *, char *));
 
 // Token
 void	token_push(t_token *t, enum e_token_type type, char *tok);
-void	token_insrt(t_toklist **tok, t_toklist **newtok);
+void	token_insrt(t_toklist *dst, t_token *src);
 void	token_ittr(t_token *t, void (*fn)(t_toklist *));
 void	token_map(t_token *t, t_toklist *(*fn)(t_toklist *));
 
